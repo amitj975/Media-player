@@ -1,0 +1,75 @@
+INFO:root:Started with params ['main.py']
+INFO:root:Started with params ['main.py']
+INFO:urllib3.connectionpool:Starting new HTTP connection (1): subscene.com
+INFO:urllib3.connectionpool:Starting new HTTP connection (1): subscene.com
+INFO:urllib3.connectionpool:Starting new HTTP connection (1): subscene.com
+WARNING:root:Some characters could not be decoded, and were replaced with REPLACEMENT CHARACTER.
+INFO:root:Started with params ['main.py']
+INFO:urllib3.connectionpool:Starting new HTTP connection (1): subscene.com
+INFO:urllib3.connectionpool:Starting new HTTP connection (1): subscene.com
+INFO:urllib3.connectionpool:Starting new HTTP connection (1): subscene.com
+WARNING:root:Some characters could not be decoded, and were replaced with REPLACEMENT CHARACTER.
+INFO:root:Started with params ['main.py']
+INFO:urllib3.connectionpool:Starting new HTTP connection (1): subscene.com
+INFO:urllib3.connectionpool:Starting new HTTP connection (1): subscene.com
+INFO:urllib3.connectionpool:Starting new HTTP connection (1): subscene.com
+WARNING:root:Some characters could not be decoded, and were replaced with REPLACEMENT CHARACTER.
+INFO:root:Started with params ['main.py']
+INFO:urllib3.connectionpool:Starting new HTTP connection (1): subscene.com
+INFO:urllib3.connectionpool:Starting new HTTP connection (1): subscene.com
+INFO:urllib3.connectionpool:Starting new HTTP connection (1): subscene.com
+WARNING:root:Some characters could not be decoded, and were replaced with REPLACEMENT CHARACTER.
+INFO:root:Started with params ['main.py']
+INFO:urllib3.connectionpool:Starting new HTTP connection (1): subscene.com
+INFO:urllib3.connectionpool:Starting new HTTP connection (1): subscene.com
+INFO:urllib3.connectionpool:Starting new HTTP connection (1): subscene.com
+WARNING:root:Some characters could not be decoded, and were replaced with REPLACEMENT CHARACTER.
+INFO:root:Started with params ['main.py']
+INFO:urllib3.connectionpool:Starting new HTTP connection (1): subscene.com
+INFO:urllib3.connectionpool:Starting new HTTP connection (1): subscene.com
+INFO:urllib3.connectionpool:Starting new HTTP connection (1): subscene.com
+WARNING:root:Some characters could not be decoded, and were replaced with REPLACEMENT CHARACTER.
+INFO:root:Started with params ['main.py']
+INFO:urllib3.connectionpool:Starting new HTTP connection (1): subscene.com
+INFO:urllib3.connectionpool:Starting new HTTP connection (1): subscene.com
+INFO:urllib3.connectionpool:Starting new HTTP connection (1): subscene.com
+WARNING:root:Some characters could not be decoded, and were replaced with REPLACEMENT CHARACTER.
+INFO:root:Started with params ['main.py']
+INFO:urllib3.connectionpool:Starting new HTTP connection (1): subscene.com
+ERROR:root:Error in fetching subtitle for /home/amit/Videos/Kung Fu Panda 3 (2015) 1080p R6 [DayT.se].mp4(<class 'bs4.FeatureNotFound'>, FeatureNotFound("Couldn't find a tree builder with the features you requested: lxml. Do you need to install a parser library?",), <traceback object at 0x7f6e5e0dec48>)
+INFO:root:Started with params ['main.py']
+INFO:root:Started with params ['main.py']
+INFO:root:Started with params ['main.py']
+INFO:urllib3.connectionpool:Starting new HTTP connection (1): subscene.com
+ERROR:root:Error in fetching subtitle for /home/amit/Videos/Kung Fu Panda 3 (2015) 1080p R6 [DayT.se].mp4(<class 'bs4.FeatureNotFound'>, FeatureNotFound("Couldn't find a tree builder with the features you requested: lxml. Do you need to install a parser library?",), <traceback object at 0x7fc440010b08>)
+INFO:root:Started with params ['main.py']
+INFO:urllib3.connectionpool:Starting new HTTP connection (1): subscene.com
+ERROR:root:Error in fetching subtitle for /home/amit/Videos/Kung Fu Panda 3 (2015) 1080p R6 [DayT.se].mp4(<class 'bs4.FeatureNotFound'>, FeatureNotFound("Couldn't find a tree builder with the features you requested: lxml. Do you need to install a parser library?",), <traceback object at 0x7f2220ef4b08>)
+INFO:root:Started with params ['main.py']
+INFO:urllib3.connectionpool:Starting new HTTP connection (1): subscene.com
+INFO:urllib3.connectionpool:Starting new HTTP connection (1): subscene.com
+INFO:urllib3.connectionpool:Starting new HTTP connection (1): subscene.com
+INFO:root:Started with params ['main.py']
+INFO:urllib3.connectionpool:Starting new HTTP connection (1): subscene.com
+INFO:urllib3.connectionpool:Starting new HTTP connection (1): subscene.com
+INFO:urllib3.connectionpool:Starting new HTTP connection (1): subscene.com
+INFO:root:Started with params ['main.py']
+INFO:urllib3.connectionpool:Starting new HTTP connection (1): subscene.com
+INFO:urllib3.connectionpool:Starting new HTTP connection (1): subscene.com
+INFO:urllib3.connectionpool:Starting new HTTP connection (1): subscene.com
+INFO:root:Started with params ['main.py']
+INFO:urllib3.connectionpool:Starting new HTTP connection (1): subscene.com
+INFO:urllib3.connectionpool:Starting new HTTP connection (1): subscene.com
+INFO:urllib3.connectionpool:Starting new HTTP connection (1): subscene.com
+INFO:root:Started with params ['main.py']
+INFO:urllib3.connectionpool:Starting new HTTP connection (1): subscene.com
+INFO:urllib3.connectionpool:Starting new HTTP connection (1): subscene.com
+INFO:urllib3.connectionpool:Starting new HTTP connection (1): subscene.com
+INFO:root:Started with params ['main.py']
+INFO:urllib3.connectionpool:Starting new HTTP connection (1): subscene.com
+INFO:urllib3.connectionpool:Starting new HTTP connection (1): subscene.com
+INFO:urllib3.connectionpool:Starting new HTTP connection (1): subscene.com
+INFO:root:Started with params ['main.py']
+INFO:urllib3.connectionpool:Starting new HTTP connection (1): subscene.com
+INFO:urllib3.connectionpool:Starting new HTTP connection (1): subscene.com
+INFO:urllib3.connectionpool:Starting new HTTP connection (1): subscene.com
