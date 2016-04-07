@@ -2,16 +2,18 @@ from PyQt4 import QtCore, QtGui
 from PyQt4.phonon import Phonon
 from Gui import Gui
 from subtitle import amit 
-
+import os
 
 
 
 
 class MainWindow(QtGui.QMainWindow):
-	
+	flag_b=False
 	loop_flag =False
-	bookmark_flag =False
+	bookmark_flag =True
 	video_name = 'xyz'
+	time =0
+	current_time=0
 	def __init__(self):
 		super(MainWindow, self).__init__()
 
@@ -75,6 +77,13 @@ class MainWindow(QtGui.QMainWindow):
 			self.computeAction.setEnabled(True)
 			self.fullScrAction.setEnabled(True)
 			self.totalTime = str((self.media_object.totalTime()/60000)%60)+":"+str((self.media_object.totalTime()/1000)%60)
+			print "playing"
+			displayTime = QtCore.QTime((self.time / 3600000) % 24, (self.time / 60000) % 60,
+						(self.time / 1000) % 60)
+			self.timeLabel.setText(displayTime.toString("HH:mm:ss")+"/"+self.totalTime)
+			print self.timeLabel.text()
+			self.current_time = self.time
+			self.media_object.seek(self.time)
 		elif newState == Phonon.StoppedState:
 			self.stopAction.setEnabled(False)
 			self.playAction.setEnabled(True)
@@ -83,6 +92,8 @@ class MainWindow(QtGui.QMainWindow):
 			self.current_time = 0
 			self.computeAction.setEnabled(False)
 			self.fullScrAction.setEnabled(True)
+			print "stopping"
+			self.flag_b=False
 		elif newState == Phonon.PausedState:
 			self.pauseAction.setEnabled(False)
 			self.stopAction.setEnabled(True)
@@ -93,22 +104,41 @@ class MainWindow(QtGui.QMainWindow):
 
 
 	def sourceChanged(self, source):
-		self.videoTable.setCurrentItem(self.videoTable.topLevelItem(self.sources.index(source)))
-		self.timeLabel.setText("00:00:00")
-		self.current_time = 0
+		#self.videoTable.setCurrentItem(self.videoTable.topLevelItem(self.sources.index(source)))
+		#self.timeLabel.setText("00:00:00")
+		#self.current_time = 0
+		print "yes"
+		self.flag_b=False
 
 	def tableClicked(self, item_x,col):	
+		self.flag_b=False
 
 		self.media_object.stop()
 		self.media_object.clearQueue()
 		#print self.videoTable.indexOfTopLevelItem(item_x)
 		#print col
+
 		self.video_name=item_x.text(col)
 		#print(self.videoTable.indexOfTopLevelItem(item_x).text())
 		self.media_object.setCurrentSource(self.sources[self.videoTable.indexOfTopLevelItem(item_x)])
+		print "wohoo"
+		self.media_object.play()
+		self.videoTable.setCurrentItem(item_x)
+		self.timeLabel.setText("00:00:00")
+		self.current_time = 0
+		self.time=0
+		#if playing currently, continue playing the click one
 
-		self.media_object.play()#if playing currently, continue playing the click one
-	
+
+		if item_x.parent() != None:
+			name = str(item_x.text(0))
+			print name 	
+			#print long(name[7:-1])
+			self.time = long(name[7:-1])
+			print self.time
+			
+			
+		#self.media_object.play()
 
 	
 	def setupActions(self):
@@ -169,17 +199,25 @@ class MainWindow(QtGui.QMainWindow):
 
 
 	def bookmark_function(self):
-		if self.bookmark_flag ==False:
-			self.bookmark_flag=True
-			self.bstart_time=self.current_time
-		else:
+		self.bstart_time=self.current_time
+
+		#print (self.videoTable.topLevelItem(self.sources.index(self.media_object)))
+		print ("bookmarked")
+		b = open(str(self.videoTable.currentItem().text(0)+".txt"),"a+")
+		b.write(str(self.bstart_time)+"\n")
+		self.cur_item = self.videoTable.currentItem()
+		if self.cur_item.parent() !=None:
+			self.cur_item = self.cur_item.parent()
+		self.cur_child = QtGui.QTreeWidgetItem()
+		self.cur_child.setText(0,"b_mark("+str(self.bstart_time)+")")
+		self.cur_item.addChild(self.cur_child)
+	
+	'''	if self.bookmark_flag==True:
 			self.bookmark_flag=False
-			self.bend_time=self.current_time
-			#print (self.videoTable.topLevelItem(self.sources.index(self.media_object)))
-			print ("bookmarked")
-			b = open(str(self.video_name+".txt"),"a+")
-			b.write(str(self.bstart_time)+" "+str(self.bend_time)+"\n")
-			#self.media_object.seek(self.bstart_time)                                         $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+			bstart_time=self.current_time
+		else:
+			self.bookmark_flag=True
+			self.media_object.seek(300000)'''#                                         $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
 
 
@@ -225,7 +263,12 @@ class MainWindow(QtGui.QMainWindow):
 			title = self.get_file_name(name)
 			titleItem = QtGui.QTreeWidgetItem()
 			titleItem.setText(0,title)
-
+			if(os.path.isfile(title+".txt")):
+				bmark_file = open(title+".txt","r")
+				for line in bmark_file:
+					child = QtGui.QTreeWidgetItem()
+					child.setText(0,"b_mark("+line[:-1]+")") 
+					titleItem.addChild(child)
 			#print titleItem.text(0)
 			self.videoTable.addTopLevelItem(titleItem)
 
@@ -235,6 +278,10 @@ class MainWindow(QtGui.QMainWindow):
 
 		if self.sources:
 			self.media_object.setCurrentSource(self.sources[index])
+			self.videoTable.setCurrentItem(self.videoTable.itemAt(index,0))
+			self.timeLabel.setText("00:00:00")
+			self.current_time = 0
+			self.time=0
 			self.media_object.play()
 			#amit(self.subtitle_string)                                              $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 			

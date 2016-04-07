@@ -16,7 +16,7 @@ class Gui(object):
 
 		self.mainwindow.videoTable = QtGui.QTreeWidget()
 		self.mainwindow.videoTable.setHeaderLabel(headers)
-		self.mainwindow.videoTable.itemPressed.connect(self.mainwindow.tableClicked)
+		self.mainwindow.videoTable.itemClicked.connect(self.mainwindow.tableClicked)
 		self.mainwindow.videoTable.itemDoubleClicked.connect(self.mainwindow.tableClicked)
 		rightFrame = QtGui.QFrame(self.mainwindow)
 		self.setup_right_frame(rightFrame)

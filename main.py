@@ -6,10 +6,10 @@
 
 """
 
-
+import sip
 
 #import sip #only to count no "/" in rfind
-#sip.setapi('QString', 2)
+sip.setapi('QString', 2)
 
 from PyQt4 import QtCore, QtGui
 
