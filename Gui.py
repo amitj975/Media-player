@@ -81,10 +81,10 @@ class Gui(object):
 		volumeSlider.setAudioOutput(self.mainwindow.audioOutput)
 		volumeSlider.setSizePolicy(QtGui.QSizePolicy.Maximum, 
 			QtGui.QSizePolicy.Maximum)
-		#volumeSlider.setOrientation(QtCore.Qt.Vertical)qtreewidget pyqt
 
 
 		self.mainwindow.timeLabel = QtGui.QLabel(self.mainwindow.videoWidget.tempWidget)
+		self.mainwindow.timeLabel.setStyleSheet("QLabel { color :lightblue; }");
 		self.mainwindow.timeLabel.setText("00:00:00/00:00:00")
 		self.mainwindow.current_time = 0
 		self.mainwindow.timeLabel.setWordWrap(True)

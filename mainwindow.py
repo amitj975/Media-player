@@ -1,8 +1,94 @@
 from PyQt4 import QtCore, QtGui
 from PyQt4.phonon import Phonon
 from Gui import Gui
-from bsub import amit 
+from bsub import getSubtitle 
 import os
+import sys
+import threading
+import time
+
+# class Window(QtGui.QMainWindow):
+
+#     def __init__(self):
+#         super(Window, self).__init__()
+#         self.setGeometry(50, 50, 500, 300)
+#         self.setWindowTitle("PyQT tuts!")
+#         self.setWindowIcon(QtGui.QIcon('pythonlogo.png'))
+
+#         extractAction = QtGui.QAction("&GET TO THE CHOPPAH!!!", self)
+#         extractAction.setShortcut("Ctrl+Q")
+#         extractAction.setStatusTip('Leave The App')
+#         extractAction.triggered.connect(self.close_application)
+
+#         self.statusBar()
+
+#         mainMenu = self.menuBar()
+#         fileMenu = mainMenu.addMenu('&File')
+#         fileMenu.addAction(extractAction)
+        
+
+#         self.home()
+
+#     def home(self):
+#         btn = QtGui.QPushButton("Quit", self)
+#         btn.clicked.connect(self.close_application)
+#         btn.resize(btn.minimumSizeHint())
+#         btn.move(0,100)
+
+#         extractAction = QtGui.QAction(QtGui.QIcon('todachoppa.png'), 'Flee the Scene', self)
+#         extractAction.triggered.connect(self.close_application)
+        
+#         self.toolBar = self.addToolBar("Extraction")
+#         self.toolBar.addAction(extractAction)
+
+#         checkBox = QtGui.QCheckBox('Shrink Window', self)
+#         checkBox.move(100, 25)
+#         checkBox.stateChanged.connect(self.enlarge_window)
+
+#         self.progress = QtGui.QProgressBar(self)
+#         self.progress.setGeometry(200, 80, 250, 20)
+
+#         self.btn = QtGui.QPushButton("Download",self)
+#         self.btn.move(200,120)
+#         self.btn.clicked.connect(self.download)
+
+#         self.show()
+
+
+#     def download(self):
+#         self.completed = 0
+
+#         while self.completed < 100:
+#             self.completed += 0.0001
+#             self.progress.setValue(self.completed)
+        
+        
+
+#     def enlarge_window(self, state):
+#         if state == QtCore.Qt.Checked:
+#             self.setGeometry(50,50, 1000, 600)
+#         else:
+#             self.setGeometry(50, 50, 500, 300)
+        
+
+
+#     def close_application(self):
+#         choice = QtGui.QMessageBox.question(self, 'Extract!',
+#                                             "Get into the chopper?",
+#                                             QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
+#         if choice == QtGui.QMessageBox.Yes:
+#             print("Extracting Naaaaaaoooww!!!!")
+#             sys.exit()
+#         else:
+#             pass
+        
+        
+
+    
+# def run():
+#     app = QtGui.QWidget()
+#     app.show()
+
 
 
 
@@ -58,8 +144,9 @@ class MainWindow(QtGui.QMainWindow):
 
 		self.media_object = None
 		self.current_time = 0
-		self.totalTime = "00:00:00"
-
+		self.totalTime =QtCore.QTime((int(00 / 3600000) % 24), int((00 / 60000) % 60),
+						int((00 / 1000) % 60))
+		
 		self.audioOutput = Phonon.AudioOutput(Phonon.VideoCategory, self)
 		self.media_object = Phonon.MediaObject(self)
 
@@ -97,7 +184,7 @@ class MainWindow(QtGui.QMainWindow):
 	def tick(self, time):
 		displayTime = QtCore.QTime((time / 3600000) % 24, (time / 60000) % 60,
 						(time / 1000) % 60)
-		self.timeLabel.setText(displayTime.toString("HH:mm:ss")+"/"+self.totalTime)
+		self.timeLabel.setText(displayTime.toString("HH:mm:ss")+"/"+self.totalTime.toString("HH:mm:ss"))
 		if not self.flag_b:
 			self.current_time = time
 
@@ -119,13 +206,14 @@ class MainWindow(QtGui.QMainWindow):
 			self.fullScrAction.setEnabled(True)
 			self.seek_backward.setEnabled(True)
 			self.seek_forward.setEnabled(True)
-			self.totalTime = str(int(self.media_object.totalTime()/3600000)%24)+":"+str(int(self.media_object.totalTime()/60000)%60)+":"+str(int(self.media_object.totalTime()/1000)%60)
-			###print "playing"
-			###print self.current_time
-			###print self.flag_b
+			
+			self.totalTime = QtCore.QTime((int(self.media_object.totalTime() / 3600000) % 24), int((self.media_object.totalTime() / 60000) % 60),
+						int((self.media_object.totalTime() / 1000) % 60))
+
 			displayTime = QtCore.QTime((self.current_time / 3600000) % 24, (self.current_time / 60000) % 60,
 						(self.current_time / 1000) % 60)
-			self.timeLabel.setText(displayTime.toString("HH:mm:ss")+"/"+self.totalTime)
+			
+			self.timeLabel.setText(displayTime.toString("HH:mm:ss")+"/"+self.totalTime.toString("HH:mm:ss"))
 			self.playing = True
 			###print self.timeLabel.text()
 			#self.current_time = self.time
@@ -228,21 +316,20 @@ class MainWindow(QtGui.QMainWindow):
 			self.videoWidget, shortcut="Esc", enabled=False,
 			triggered=self.compute)
 
-		self.loopAction = QtGui.QAction(
-			self.style().standardIcon(42),"Loop",
+		self.loopAction = QtGui.QAction("Loop",
 			self,shortcut = "Ctrl+R",enabled = True,
 			triggered = self.loop
 			)
 
 
-		self.bookmarkAction = QtGui.QAction(
-			self.style().standardIcon(QtGui.QStyle.SP_ToolBarVerticalExtensionButton), "bookmark",
+		self.bookmarkAction = QtGui.QAction("bookmark",
 			self,shortcut="Ctrl+B", enabled=True,
 			triggered=self.bookmark_function)
 
-		self.downloadAction = QtGui.QAction( "download",
+		self.downloadAction = QtGui.QAction("download",
 			self,shortcut="Ctrl+D", enabled=True,
 			triggered=self.download_function)
+
 		self.downloadAction.setCheckable(True)
 		self.downloadAction.setChecked(True)
 
@@ -250,19 +337,18 @@ class MainWindow(QtGui.QMainWindow):
 			self.style().standardIcon(45),"Speed",
 			self,shortcut='[',enabled = True,
 			triggered = self.speed_fun)
-		self.playlistAction = QtGui.QAction(
-			self.style().standardIcon(48),"Playlist",
+		self.playlistAction = QtGui.QAction("Playlist",
 			self,shortcut='Ctrl+P',enabled = True,
 			triggered = self.playlist_fun)
 		
-		self.fullScrAction = QtGui.QAction(
-			self.style().standardIcon(QtGui.QStyle.SP_ToolBarVerticalExtensionButton), "FullScreen",
+		self.fullScrAction = QtGui.QAction("FullScreen",
 			self,shortcut="F11", enabled=False,
 			triggered=self.compute)
 
 		self.seek_forward= QtGui.QAction(
 			self.style().standardIcon(QtGui.QStyle.SP_ToolBarVerticalExtensionButton), "Forward",
 			self, enabled=False,
+
 			triggered=self.forward)
 		self.seek_backward = QtGui.QAction(
 			self.style().standardIcon(QtGui.QStyle.SP_ToolBarVerticalExtensionButton), "Backward",
@@ -271,8 +357,9 @@ class MainWindow(QtGui.QMainWindow):
 
 		self.seek_forward.setShortcut(QtGui.QKeySequence(QtCore.Qt.Key_Right))
 		self.seek_backward.setShortcut(QtGui.QKeySequence(QtCore.Qt.Key_Left))
+		
 		self.addFilesAction = QtGui.QAction("Open", self,
-			shortcut = "Ctrl+F", triggered = self.addFiles)
+			shortcut = "Ctrl+F", triggered = self.magic)
 
 		self.exitAction = QtGui.QAction("Exit", self, shortcut="Ctrl+X", 
 			triggered = self.close)
@@ -345,6 +432,7 @@ class MainWindow(QtGui.QMainWindow):
 			#self.videoWidget.resize(3*w/4,self.height())
 			
 			self.visible=True
+
 	def speed_fun(self):
 			list_of_backend_audio_effects = Phonon.BackendCapabilities.availableAudioEffects()
 			list_of_effect_names = [str(elem.name()) for elem in list_of_backend_audio_effects]
@@ -376,14 +464,37 @@ class MainWindow(QtGui.QMainWindow):
 		#self.media_object.currentSouce().fileName() using slash
 		#make sure self.file_dict's file_name using the same
 		return file_path.replace("\\", "/")
-	
 
 
-	def addFiles(self):#filter same path file
-		files = QtGui.QFileDialog.getOpenFileNames(self,"open",
+
+
+	def magic(self):#filter same path file
+		self.files = QtGui.QFileDialog.getOpenFileNames(self,"open",
 				QtGui.QDesktopServices.storageLocation(QtGui.QDesktopServices.MoviesLocation))
+		self.addFiles()
+		return
 
+
+	def addFiles(self):
+		files=self.files
 		index = len(self.sources)
+
+		if(self.download):
+			print("downloading")
+
+			app = QtGui.QWidget()
+			app.show()
+			# self.progressBar = QtGui.QProgressBar(self)
+			# self.progressBar.setRange(0,1)
+			# self.progressBar.exec_()
+			# self.progressBar.setValue(0)
+			getSubtitle(files)
+			app.hide()
+
+
+			# self.progressBar.setValue(1)
+		else:
+			print("Not downloading")
 
 		files_is_empty = True
 		durationItem = None
@@ -438,15 +549,12 @@ class MainWindow(QtGui.QMainWindow):
 			#self.video_name = self.self.videoTable.itemAt(index,0).text(0)
 			self.media_object.play()
 			
-			if(self.download):
-				print("downloading")
-				amit(files)
-			else:
-				print("Not downloading")
+
+
 
 	def about(self):
 		QtGui.QMessageBox.information(self, "About",
-			"Created for virtual team     --yhx")
+			"Created By A^2 Team")
 	
 
 	def finished(self):
