@@ -1,4 +1,3 @@
-
 from cx_Freeze import setup, Executable
 
 # Dependencies are automatically detected, but it might need
@@ -11,8 +10,8 @@ base = 'Win32GUI' if sys.platform=='win32' else None
 executables = [
     Executable('main.py',
                base=base,
-               targetName='PyPlayer.exe',
-               icon='icon.ico'
+               targetName='A^2_Player.exe',
+               icon='./icon.png'
 
                )
 ]
@@ -20,9 +19,9 @@ executables = [
 shortcut_table = [
     ("DesktopShortcut",        # Shortcut
      "DesktopFolder",          # Directory_
-     "PyPlayer",                                 # Name
+     "A^2_Player",                                 # Name
      "TARGETDIR",              # Component_
-     "[TARGETDIR]PyPlayer.exe",                  # Target
+     "[TARGETDIR]A^2_Player.exe",                  # Target
      None,                     # Arguments
      None,                     # Description
      None,                     # Hotkey
@@ -36,7 +35,7 @@ shortcut_table = [
      "StartupFolder",          # Directory_
      "PyPlayer",                                 # Name
      "TARGETDIR",              # Component_
-     "[TARGETDIR]PyPlayer.exe",                  # Target
+     "[TARGETDIR]A^2_Player.exe",                  # Target
      None,                     # Arguments
      None,                     # Description
      None,                     # Hotkey
@@ -55,7 +54,7 @@ bdist_msi_options = {'data': msi_data}
 
 
 setup(
-    name = "PyPlayer",
+    name = "A^2_Player",
     version = '0.1',
     description = "A Python-based media player",
     options = {'bdist_msi':bdist_msi_options},

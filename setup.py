@@ -10,7 +10,7 @@ base = 'Win32GUI' if sys.platform=='win32' else None
 executables = [
     Executable('main.py',
                base=base,
-               targetName='A^2_Player.exe',
+               targetName='A^2_Player',
                icon='./icon.png'
 
                )
@@ -21,7 +21,7 @@ shortcut_table = [
      "DesktopFolder",          # Directory_
      "A^2_Player",                                 # Name
      "TARGETDIR",              # Component_
-     "[TARGETDIR]A^2_Player.exe",                  # Target
+     "[TARGETDIR]A^2_Player",                  # Target
      None,                     # Arguments
      None,                     # Description
      None,                     # Hotkey
@@ -35,7 +35,7 @@ shortcut_table = [
      "StartupFolder",          # Directory_
      "PyPlayer",                                 # Name
      "TARGETDIR",              # Component_
-     "[TARGETDIR]A^2_Player.exe",                  # Target
+     "[TARGETDIR]A^2_Player",                  # Target
      None,                     # Arguments
      None,                     # Description
      None,                     # Hotkey
