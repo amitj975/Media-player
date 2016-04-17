@@ -119,7 +119,7 @@ class MainWindow(QtGui.QMainWindow):
 				if(self.tempWidget.isHidden()):
 					self.tempWidget.show()
 					QtCore.QTimer.singleShot(10000,self.tempWidget.hide)
-			def mouseReleaseEvent(self,event):
+			'''def mouseReleaseEvent(self,event):
 				if not self.outer_self.playing:
 		 			self.outer_self.media_object.play()
 		 			self.outer_self.gui.btn.setIcon(QtGui.QIcon.fromTheme("media-playback-pause"))
@@ -127,7 +127,7 @@ class MainWindow(QtGui.QMainWindow):
 				else:
 		 			self.outer_self.media_object.pause()
 		 			self.outer_self.gui.btn.setIcon(QtGui.QIcon.fromTheme("media-playback-start"))	
-		 			self.outer_self.playing = False
+		 			self.outer_self.playing = False'''
 			def mouseDoubleClickEvent(self,event):
 				if self.isFullScreen():
 					self.setFullScreen(False)
@@ -215,6 +215,7 @@ class MainWindow(QtGui.QMainWindow):
 			
 			self.timeLabel.setText(displayTime.toString("HH:mm:ss")+"/"+self.totalTime.toString("HH:mm:ss"))
 			self.playing = True
+			print ("playing")
 			###print self.timeLabel.text()
 			#self.current_time = self.time
 			self.media_object.seek(self.current_time)
@@ -227,6 +228,8 @@ class MainWindow(QtGui.QMainWindow):
 			#self.timeLabel.setText("00:00:00")
 			##print self.current_time
 			##print self.flag_b
+			self.playing=False
+			print("stopping")
 			if not self.flag_b:
 				self.current_time = 0
 			self.computeAction.setEnabled(False)
@@ -240,13 +243,15 @@ class MainWindow(QtGui.QMainWindow):
 			self.computeAction.setEnabled(True)
 			self.fullScrAction.setEnabled(True)
 			#if(self.time==0):
+			self.playing=False
 				#self.time = self.current_time
-
+			print ("pausing")	
 
 	def sourceChanged(self, source):
 		#self.videoTable.setCurrentItem(self.videoTable.topLevelItem(self.sources.index(source)))
 		#self.timeLabel.setText("00:00:00")
 		#self.current_time = 0
+		#self.media_object.play()
 		print("yes")
 		###print self.current_time
 		#self.flag_b=False
@@ -260,7 +265,12 @@ class MainWindow(QtGui.QMainWindow):
 		###print col
 		self.video_name=item_x.text(col)
 		###print(self.videoTable.indexOfTopLevelItem(item_x).text())
-		self.media_object.setCurrentSource(self.sources[self.videoTable.indexOfTopLevelItem(item_x)])
+		if item_x.parent() != None:
+			father = item_x.parent()
+		else:
+			father = item_x
+		print(self.videoTable.indexOfTopLevelItem(father))
+		self.media_object.setCurrentSource(self.sources[self.videoTable.indexOfTopLevelItem(father)])
 		###print "wohoo"
 		self.media_object.play()
 		self.videoTable.setCurrentItem(item_x)
@@ -272,8 +282,9 @@ class MainWindow(QtGui.QMainWindow):
 
 		if item_x.parent() != None:
 			child_idx = item_x.parent().indexOfChild(item_x)
-			bmark_file = open(item_x.parent().text(0)+".txt","r")
+			bmark_file = open(self.name_dict[item_x.parent().text(0)]+".txt","r")
 			idx =0;
+			#print(child_idx)
 			for line in bmark_file:
 				if idx == child_idx:
 					##print "Yes"
@@ -287,7 +298,7 @@ class MainWindow(QtGui.QMainWindow):
 			while(self.name[idx] != '('):
 				idx = idx+1
 
-			self.current_time = long(self.name[(idx+1):-2])
+			self.current_time = int(self.name[(idx+1):-2])
 			###print self.current_time
 			self.flag_b=True
 			
@@ -332,7 +343,8 @@ class MainWindow(QtGui.QMainWindow):
 
 		self.downloadAction.setCheckable(True)
 		self.downloadAction.setChecked(True)
-
+		self.loopAction.setCheckable(True)
+		self.loopAction.setChecked(False)
 		self.speedAction = QtGui.QAction(
 			self.style().standardIcon(45),"Speed",
 			self,shortcut='[',enabled = True,
@@ -374,10 +386,12 @@ class MainWindow(QtGui.QMainWindow):
 		file_name = file_path[slash +1 : ]
 		return file_name
 	def forward(self):
-		self.current_time = self.current_time+10000
+		self.current_time = (self.current_time+10000)%self.media_object.totalTime()
 		self.media_object.seek(self.current_time)
 	def backward(self):
 		self.current_time = self.current_time-10000
+		if(self.current_time<0):
+			self.current_time=0
 		self.media_object.seek(self.current_time) 
 
 	def download_function(self):
@@ -470,7 +484,8 @@ class MainWindow(QtGui.QMainWindow):
 
 	def magic(self):#filter same path file
 		self.files = QtGui.QFileDialog.getOpenFileNames(self,"open",
-				QtGui.QDesktopServices.storageLocation(QtGui.QDesktopServices.MoviesLocation))
+				QtGui.QDesktopServices.storageLocation(QtGui.QDesktopServices.MoviesLocation),
+				"Video(*.avi *.mkv *.mp4 *.flv *.wmv);; Audio(*.mp3)")
 		self.addFiles()
 		return
 
@@ -563,12 +578,15 @@ class MainWindow(QtGui.QMainWindow):
 			index = self.videoTable.indexOfTopLevelItem(self.videoTable.currentItem())+1
 		else:
 			index = self.videoTable.indexOfTopLevelItem(self.videoTable.currentItem())
-		if index < len(self.sources):
-			self.media_object.setCurrentSource(self.sources[index])
-		else:
-			self.media_object.setCurrentSource(self.sources[0])
+		if index >= len(self.sources):
+			index=0
+		self.media_object.setCurrentSource(self.sources[index])
+		all_src = self.videoTable.findItems(self.get_file_name(self.sources[index].fileName()),QtCore.Qt.MatchExactly)
+		self.videoTable.setCurrentItem(all_src[0])
+		#self.tableClicked(all_src[0],0)
+		print ("call from finished")
 		self.media_object.play()
-
+		print ("call returned")
 
 	def setupMenus(self):
 		fileMenu = self.menuBar().addMenu("Menu")
