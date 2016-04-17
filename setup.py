@@ -33,7 +33,7 @@ shortcut_table = [
 
     ("StartupShortcut",        # Shortcut
      "StartupFolder",          # Directory_
-     "PyPlayer",                                 # Name
+     "A^2_Player",             # Name
      "TARGETDIR",              # Component_
      "[TARGETDIR]A^2_Player",                  # Target
      None,                     # Arguments
